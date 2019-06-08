@@ -1,0 +1,28 @@
+class Atelier
+types
+
+public Affectation = inmap Robot to Taches;
+  
+--definition de l'etat du systeme
+instance variables
+  public requetes: 				set of Taches := {};
+  public sont_occupes : 		set of Robot := {};
+ 	public occupe_par   :  Affectation := { |-> };   
+inv AtelierInv (occupe_par, sont_occupes, requetes) 	 
+
+functions
+ 	
+public AtelierInv: Affectation * set of Robot * set of Taches -> bool
+AtelierInv (Occupe_par, Sont_occupes, Requetes)== 
+         dom Occupe_par = Sont_occupes 
+         and rng Occupe_par subset Requetes;
+    
+operations
+--constructeur des objets de la classe
+public   Atelier: set of Taches * set of Robot * Affectation ==> Atelier
+Atelier(lesTaches, lesRobot, uneAffectation) ==
+( requetes := lesTaches;
+  sont_occupes := lesRobot;
+  occupe_par := uneAffectation
+  );
+end Atelier

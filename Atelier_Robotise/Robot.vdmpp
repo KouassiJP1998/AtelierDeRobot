@@ -1,0 +1,30 @@
+class Robot
+
+types
+public Code = <ALPHA> | <BÊTA> | <DELTA> | <EPSILON> | <GAMMA> | <IOTA> | <KAPPA> |
+          <LAMBDA> | <MU> | <NU> | <OMEGA> | <PHI> ; 
+public Etat = <Occupe> | <Libre> | <NonDisponible> | <ReserveSecurite> ;
+
+
+--definition de l'etat du systeme
+instance variables 
+public code: 	Code;
+public etat: 		Etat
+
+operations
+--constructeur des objets de la classe
+public Robot: Code * Etat ==> Robot
+Robot(sonCode,sonEtat) ==
+( code:= sonCode;
+  etat:= sonEtat 
+);
+  
+public GetCode: () ==> Code
+GetCode() ==
+  return code;
+  
+public GetEtat: () ==> Etat
+GetEtat() ==
+  return etat ;
+  
+end Robot

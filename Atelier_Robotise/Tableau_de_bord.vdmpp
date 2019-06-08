@@ -1,0 +1,85 @@
+class Tableau_de_bord
+types
+
+public Affectation = inmap Robot to Taches;
+  
+--definition de l'etat du systeme
+instance variables
+  public requetes: 				set of Taches := {};
+  public sont_occupes : 		set of Robot := {};
+ 	public occupe_par   :  Affectation := { |-> };
+inv Tableau_de_bordInv (occupe_par, sont_occupes, requetes)
+
+functions
+ 	
+public Tableau_de_bordInv: Affectation * set of Robot * set of Taches -> bool
+Tableau_de_bordInv (Occupe_par, Sont_occupes, Requetes)== 
+         dom Occupe_par = Sont_occupes 
+         and rng Occupe_par subset Requetes;
+    
+operations
+--constructeur des objets de la classe
+public   Tableau_de_bord: set of Taches * set of Robot * Affectation ==> Tableau_de_bord
+Tableau_de_bord(lesTaches, lesRobot, uneAffectation) ==
+( requetes := lesTaches;
+  sont_occupes := lesRobot;
+  occupe_par := uneAffectation
+  );
+
+--une Taches en requette
+public requete:  	 Taches ==> set of Taches
+requete(Taches) ==
+     return requetes union {Taches}           
+ pre		Taches not in set requetes ;
+
+--affecter une Tache a un Robot en attente
+public affecter:  Robot * Taches ==> ()
+affecter( Robot, Taches) ==       
+        (requetes:= requetes \ {Taches};
+        sont_occupes := sont_occupes union {Robot};
+        occupe_par:= occupe_par ++ {Robot |->  Taches }
+        )        
+pre 	Taches in set requetes and Robot not in set sont_occupes;
+
+--une tache en fin d'excecution
+public quitter:  Taches * Robot ==> ()
+quitter(Taches,Robot) ==
+               (sont_occupes:= sont_occupes\{Robot};
+                occupe_par:= occupe_par :->{Taches}
+               )                     
+pre 	Robot in set sont_occupes and Taches = occupe_par(Robot);
+
+
+--savoir si un Robot est occupé
+public estOccupe:  Robot ==> bool
+estOccupe(Robot) == 
+           return (Robot in set sont_occupes);
+  
+--trouver la Taches qu'un robot exécute
+public quelTaches: Robot ==> Taches
+quelTaches(Robot)== return occupe_par(Robot)
+pre Robot in set sont_occupes
+post RESULT=  occupe_par(Robot);
+
+--trouver le Robot exécutant une Tache donnée
+public quelRobot: Taches ==> Robot
+quelRobot(Taches) == 
+        let x in set sont_occupes be st
+        occupe_par(x)= Taches 
+        in return x
+pre   Taches  in set rng occupe_par
+post  occupe_par(RESULT)= Taches;
+
+--donner la liste des Robots occupes
+public occupes: () ==> set of Robot 
+occupes() ==
+           return sont_occupes
+pre  true  
+post RESULT = dom occupe_par;
+                        	
+-- fournir la liste des Taches en exécution
+public enExecution: ()==> set of Taches
+enExecution ()==
+             return rng occupe_par
+pre  true  
+end Tableau_de_bord

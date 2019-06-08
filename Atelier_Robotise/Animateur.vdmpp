@@ -1,0 +1,78 @@
+class  Animateur
+
+instance variables
+
+--public Etat = <Occupe> | <Libre> | <NonDisponible> | <ReserveSecurite> ;
+
+r1: Robot:= new Robot(<ALPHA>, <Occupe>);
+r2: Robot:= new Robot(<BÊTA>, <Occupe>);
+r3: Robot:= new Robot(<DELTA>, <Libre>);
+r4: Robot:= new Robot(<EPSILON>, <NonDisponible>);
+
+r5: Robot:= new Robot(<GAMMA>, <Occupe>);
+r6: Robot:= new Robot(<IOTA>, <Libre>);
+r7: Robot:= new Robot(<KAPPA>, <NonDisponible>);
+r8: Robot:= new Robot(<LAMBDA>, <Libre>);
+
+r9: Robot:= new Robot(<MU>, <Occupe>);
+r10: Robot:= new Robot(<NU>, <Libre>);
+r11: Robot:= new Robot(<OMEGA>, <Occupe>);
+r12:Robot := new Robot( <PHI>, <Libre>);
+
+--public Code = <ALPHA> | <BÊTA> | <DELTA> | <EPSILON> | <GAMMA> | <IOTA> | <KAPPA> |
+--          <MU> | <NU> | <OMEGA> | <PHI> | <C1220C> ; 
+--public Classe =  <Conditionner_un_produit> |<Monter_une_piece> | <Monter_une_piece>  | <Fixer_une_piece>
+  
+t1:Taches := new Taches( <T1>, <Conditionner_un_produit>);
+t2:Taches := new Taches( <T2>, <Conditionner_un_produit>);
+t3:Taches := new Taches( <T3>, <Monter_une_piece>);
+t4:Taches := new Taches( <T4>, <Assembler_une_piece>);
+
+t5:Taches := new Taches( <T5>, <Monter_une_piece>);
+t6:Taches := new Taches( <T6>, <Conditionner_un_produit>);
+t7:Taches := new Taches( <T7>, <Monter_une_piece>);
+t8:Taches := new Taches( <T8>, <Conditionner_un_produit>);
+
+
+t9:Taches := new Taches( <T9>, <Conditionner_un_produit>);
+t10:Taches := new Taches( <T10>, <Monter_une_piece>);
+t11:Taches := new Taches( <T11>, <Conditionner_un_produit>);
+t12:Taches := new Taches( <T11>, <Monter_une_piece>);
+
+les_requetes: set of Taches := {t1,t2,t3,t4,t5,t6,t7,t8,t9,t10,t11,t12};
+Robot_occupes: set of Robot := {r1,r2,r4,r6,r8,r9,r11};
+
+ LeSysteme: Tableau_de_bord := new Tableau_de_bord(les_requetes,Robot_occupes, 
+                              {r1|->t7,
+                               r2|->t6,
+                               r4|->t5,
+                               r6|->t4,
+                               r8|->t3,
+                               r9|->t2,
+                               r11|->t1} );                         
+ 
+ operations
+  
+ public test_estOccupe: ()==> bool
+ test_estOccupe() ==
+            return LeSysteme.estOccupe(r5); 
+ 
+ 
+ public test_occupes: ()==> set of Robot
+ test_occupes() ==
+            return LeSysteme.occupes(); 
+  
+  
+ public test_enExecution: () ==> set of Taches
+ test_enExecution() ==
+            return LeSysteme.enExecution();
+            
+public  test_quelTaches: () ==> Taches
+ test_quelTaches() ==
+            return LeSysteme.quelTaches(r2);           
+ 
+ public test_quel_Robot: () ==> Robot
+ test_quel_Robot() ==
+            return LeSysteme.quelRobot(t6);   
+
+end Animateur
